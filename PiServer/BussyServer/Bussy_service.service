@@ -1,0 +1,12 @@
+[Unit]
+Description=Bussy
+[Service]
+WorkingDirectory=/srv/Bussy/
+ExecStart=/opt/dotnet/dotnet /srv/Bussy/BussyServer.dll
+Restart=always
+SyslogIdentifier=Bussy       
+RestartSec=5 
+User=will
+Environment=DOTNET_ROOT=/opt/dotnet
+[Install]
+WantedBy=multi-user.target

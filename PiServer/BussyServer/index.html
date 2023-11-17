@@ -1,0 +1,194 @@
+<!doctype html>
+    <html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>Bussy McBus Face Status v0.11</title>
+        <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+        <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js'></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <style>
+            .sensor-hot {
+                color: red;
+            }
+            .sensor-cold {
+                color: blue;
+            }
+            .bold-true {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class='navbar navbar-dark bg-dark mb-5'>
+            <div class='container-fluid'>
+                <a class='navbar-brand' href='#'>Bussy McBus Face Status</a>
+                <a class='navbar' href="#" onclick="SetMainsWater()">Set Mains Water</a>
+            </div>
+        </nav>
+        <div class='container mt-5'>
+            <div class='row'>
+                <div class='col'>
+                    <div class='card mb-4'>
+                        <div class='card-header bg-primary text-white'>
+                            <h2 class='card-title'>Sensors</h2>
+                        </div>
+                        <div class='card-body'>
+                            <div id='sensors-data'></div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col'>
+                    <div class='card mb-4'>
+                        <div class='card-header bg-primary text-white'>
+                            <h2 class='card-title'>Connections</h2>
+                        </div>
+                        <div class='card-body'>
+                            <div id='connections-data'></div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col'>
+                    <div class='card mb-4'>
+                        <div class='card-header bg-primary text-white'>
+                            <h2 class='card-title'>Timers</h2>
+                        </div>
+                        <div class='card-body'>
+                            <div id='timers-data'></div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col'>
+                    <div class='card mb-4'>
+                        <div class='card-header bg-primary text-white'>
+                            <h2 class='card-title'>Analogs</h2>
+                        </div>
+                        <div class='card-body'>
+                            <div id='analogs-data'>
+                                <h4>Fresh Water Tank</h4>
+                                <div class='progress'>
+                                    <div class='progress-bar bg-primary' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'>0%</div>
+                                </div>
+                                <h4>Grey Waste Tank</h4>
+                                <div class='progress'>
+                                    <div class='progress-bar bg-secondary' role='progressbar' style='width: 100%;' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>100%</div>
+                                </div>
+                            </div>
+                            <div id='information-data'>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col'>
+                    <div class='card mb-4'>
+                        <div class='card-header bg-primary text-white'>
+                            <h2 class='card-title'>Calculations</h2>
+                        </div>
+                        <div class='card-body'>
+                            <div id='calculations-data'>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        var dataStored = {};
+        function updateData(endpoint, targetId) {
+            fetch(endpoint)
+                .then(response => response.json())
+                .then(data => {
+                    dataStored[targetId] = data;
+                    let htmlString = '';
+                    const currentTime = moment();
+                    for (const key in data) {
+                        let cssClass = '';
+                        let value = data[key];
+                        if (value === true) {
+                            cssClass = 'bold-true';
+                        }
+                        if (endpoint == 'api/timers') {
+                            const endTime = moment(value);
+                            if (endTime.isAfter(currentTime)) {
+                                const secondsRemaining = endTime.diff(currentTime, 'seconds');
+                                cssClass = 'text-success'
+                                value = "On for " + secondsRemaining + ' s';
+                            }
+                            else
+                            {
+                                cssClass = 'text-muted'
+                                value = 'Off';
+                            
+                            }
+                        }
+                        if (endpoint =='api/connections') {
+                            const lastConnectionTime = moment(value);
+                            const secondsSinceLastConnection = currentTime.diff(lastConnectionTime, 'seconds');
+        
+                            if (secondsSinceLastConnection > 10) {
+                                cssClass = 'text-danger';
+                                value = "Offline";
+                            }
+                            else if (secondsSinceLastConnection == 0) {
+                                cssClass = 'text-success'
+                                value = "Online";
+                            }
+                            else
+                            {
+                                cssClass = 'text-warning'
+                                value = "Online - " + secondsSinceLastConnection + " s ago";
+                            }
+                            
+                        }
+                        if (data[key] === true) {
+                            if (key.includes('H_')) {
+                                cssClass = 'sensor-hot';
+                            } else if (key.includes('C_')) {
+                                cssClass = 'sensor-cold';
+                            }
+                        }
+                        if (endpoint === 'api/analogs') {
+                            // Assuming 'TankValue1' and 'TankValue2' are the keys for the tank values
+                            if (key === 'CleanWaterTank') {
+                                const tankValue1 = parseFloat(value);
+                                updateTankGauge('.progress-bar.bg-primary', tankValue1);
+                            } else if (key === 'WasteWaterTank') {
+                                const tankValue2 = parseFloat(value);
+                                updateTankGauge('.progress-bar.bg-secondary', tankValue2);
+                            }
+                        }
+                        else
+                        {
+                            htmlString += `<p class='mb-2 ${cssClass}'>${key} : ${value}</p>`;
+                        }
+                    }
+                    if (endpoint != 'api/analogs') 
+                    {
+                        document.getElementById(targetId).innerHTML = htmlString;
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+        setInterval(() => {
+            updateData('api/sensors', 'sensors-data');
+            updateData('api/connections', 'connections-data');
+            updateData('api/calculations', 'calculations-data');
+            updateData('api/timers', 'timers-data');
+            updateData('api/analogs', 'analogs-data');
+            updateData('api/information', 'information-data');
+        }, 1000); 
+    
+        function updateTankGauge(selector, value) {
+            const progressBar = document.querySelector(selector);
+            progressBar.style.width = value + '%';
+            progressBar.textContent = value + '%';
+        }
+    </script>
+</html>

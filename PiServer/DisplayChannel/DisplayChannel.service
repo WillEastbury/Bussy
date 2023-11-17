@@ -1,0 +1,12 @@
+[Unit]
+Description=TankSensorsClean (DisplayChannel)
+[Service]
+WorkingDirectory=/srv/TankSensorsClean/
+ExecStart=/opt/dotnet/dotnet /srv/TankSensorsClean/DisplayChannel.dll
+Restart=always
+SyslogIdentifier=TankSensorsClean      
+RestartSec=5 
+User=will
+Environment=DOTNET_ROOT=/opt/dotnet
+[Install]
+WantedBy=multi-user.target
