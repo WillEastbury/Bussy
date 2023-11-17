@@ -63,6 +63,9 @@ To rig the entire system you will need the following parts.
 ### Compute
 - 1x Raspberry Pi 4B (with Raspbian Linux installed, Wireless connected, and I2C enabled) - https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
 - 3x Raspberry Pi Pico WH (And the Arduino IDE installed and configured for Pi Pico W on your PC) - https://www.adafruit.com/product/5544
+- 1x Small Breadboard
+- Some small jumper wires for breadboard
+- 2x Grove Jumper Female converters https://thepihut.com/products/grove-4-pin-female-jumper-to-grove-4-pin-conversion-cables-5-pack?variant=40341097611459&currency=GBP&utm_medium=product_sync&utm_source=bing&utm_content=sag_organic&utm_campaign=sag_organic&msclkid=31b6492d19a4123a86542c7abf9aaf66&utm_term=4585375811816292
   
 ### Sensors and Actuators
 - 1x GrovePi+ Shield (Optional, if you don't have one of these then you can wire up the I2C direct to the pins) - https://www.unmannedtechshop.co.uk/product/grovepi/
