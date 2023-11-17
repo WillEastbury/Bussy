@@ -17,6 +17,12 @@ There is a third connected PicoPi W device, attached into a Relay Box with 8 att
 There is an LPG gas boiler connected through the Hot Water Boiler Enabled Solenoid to provide on-demand hot water. 
 ![Connection Diagram](Diagram.png "Connection Diagram")
 
+----------------------------------
+Here it is assembled and on test before install into BussyMcBusFace :- 
+
+![Test Image](/Bussy%20and%20Tappy%20IMAGES/20231116_010755.jpg "On Test") 
+
+![Web Image](/Bussy%20and%20Tappy%20IMAGES/20231116_010903.jpg "Testing Webserver") 
 
 In the repo, I provide Arduino Sketches for the picos, .net project source code for 2x .net Daemons (1x for the Webserver control panel, one for the Display Output on the Pi). 
 
