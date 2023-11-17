@@ -1,12 +1,17 @@
 # Bussy McBusFace
-## BussyMcBusFace's Designs for Campervan Water System
+## Smart Taps (Campervan Water System)
+
+If you've ever used the pressure-switched type of water system in a campervan / RV, you'll know how much of a pain they are to calibrate and use. So I snapped one day and designed my own Smart Water System for my Campervan. 
+
+---------------------------------
+
 This repo includes the designs for a Raspberry Pi 4 based .net WebServer that can update an Grove LCD RGB based display(I2C) and read 2x Grove ultrasonic ranger sensors to sense the water level in the clean tank and grey waste tank, if mains water is not connected to the vehicle (Sensed via a gpio switch).
 
 The Pi .net 6-based server receives data from 2x RaspberryPi Pico W devices that have attached buttons for hot and cold water (Connected to digital LED buttons on a Grove Pi Pico Shield).
 
 These Pico W devices connect to the server .net minimal API to request hot or cold water on a button press.
 
-There is a third connected PicoPi W device, attached into a Relay Box with 8 attached DC relays which respond to data polled from the buttons to energise the relays to enable the following connectors :-
+There is a third connected PicoPi W device, attached into a Relay Box with 8 attached DC relays which respond to data polled from the buttons to energise the relays to enable the following 12V supply connectors :-
 
 There is an LPG gas boiler connected through the Hot Water Boiler Enabled Solenoid to provide on-demand hot water. 
 
@@ -17,7 +22,6 @@ There is an LPG gas boiler connected through the Hot Water Boiler Enabled Soleno
 - Hot Water Bathroom Tap Solenoid
 - Cold Water Kitchen Tap Solenoid
 - Cold Water Bathroom Tap Solenoid
-
 ---------------------------------
 
 In the repo, I provide Arduino Sketches for the picos, .net project source code for 2x .net Daemons (1x for the Webserver control panel, one for the Display Output on the Pi). 
@@ -25,7 +29,6 @@ In the repo, I provide Arduino Sketches for the picos, .net project source code 
 To rig the entire system you will need the following parts.
 
 ### Plumbing
-
 - 5x 15mm DN15 12V Water Solenoids with check valve - https://thepihut.com/products/12v-solenoid-valve-1-2
 - 1x 12v Submersible Water Pump (I used a Whale pump) - https://www.eurocarparts.com/p/whale-standard-12v-submersible-electric-pump-white-10-litres-gp1002-560773980
 - 2x Fiamma 23L Tanks (1 blue (fresh) and 1 grey (waste)) - https://www.halfords.com/camping/water-and-waste/fiamma-roll-tank-23l-fresh-483158.html
