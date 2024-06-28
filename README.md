@@ -78,3 +78,35 @@ To rig the entire system you will need the following parts.
 - 1x Grove LCD Backlight Display - https://uk.farnell.com/seeed-studio/104030001/grove-lcd-rgb-backlight-display/dp/3932101?gross_price=true&msclkid=710062e1fa2e1b49f7d207b65a1be06d&CMP=KNC-MUK-GEN-SHOPPING-ALL-PRODUCTS-TEST1611
 - 1x Grove Switch (P) - https://wiki.seeedstudio.com/Grove-Switch-P/
 - 1x Waveshare Pico Relay B - https://www.waveshare.com/wiki/Pico-Relay-B
+
+### Pinouts 
+For convenience i've listed the pins and ports used below
+
+DEFAULT SERVER ADDRESS http://192.168.200.36:5000
+
+#### PINS RELAY CONTROLLER
+const int SolenoidColdKitchenPin = 17;   // Channel 5
+const int SolenoidHotKitchenPin = 16;    // Channel 6
+const int SolenoidColdBathroomPin = 19;  // Channel 3
+const int SolenoidHotBathroomPin = 18;   // Channel 4 
+const int SolenoidBoilerControlPin = 20; // Channel 2
+const int PumpColdPin = 21;              // Channel 1
+const int LEDPin = 13;                   // RGB LED
+const int BuzzerPin = 6;                 // Buzzer
+
+#### PINS KITCHEN AND BATHROOM TAP CONTROLLERS
+
+const int ColdButtonPin = 19;      // Cold Button = GPIO 16 on Pico (Grove D16)
+const int ColdLEDPin = 18;         // Cold Button = GPIO 17 on Pico (Grove D16)
+const int MainsWaterSelect = 16;    // Mains cold water and drainage in place
+const int HotButtonPin = 21;       // Hot Button = GPIO 20 on Pico (Grove D20)
+const int HotLEDPin = 20;          // Hot Button = GPIO 21 on Pico (Grove D20)
+
+#### PINS CABINET SENSOR CONTROLLER 
+
+int LEDPin = 12;
+int LEDOnboard = 25;
+Ultrasonic ultrasonicFresh(7);     // Yellow to Blue Fresh Tank
+Ultrasonic ultrasonicDirty(9);     // Yellow to Grey Waste Tank
+Grove_LED_Bar barFresh(4, 5, 0);   // white, yellow
+Grove_LED_Bar barGrey(10, 11, 1);  // white, yellow
